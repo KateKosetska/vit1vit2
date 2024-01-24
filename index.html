@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="ua">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Калькулятор вологості</title>
+    <meta
+      name="description"
+      content="Калькулятор для визначення вологості повітря по показникам психометричних гігрометрів ВІТ-1 та ВІТ-2."
+    />
+    <meta
+      name="keywords"
+      content="вологість повітря, калькулятор, вологість, психометричні гігрометри, ВІТ-1, ВІТ-2, гігрометр, психрометричний, вологометр, Вологометр Інженерний Технічний-1, Вологометр Інженерний Технічний-2"
+    />
+    <meta name="author" content="dmytro.mendzhul@gmail.com" />
+  </head>
+
+  <body>
+    <h1 title="Вологометр Інженерний Технічний-1">
+      Калькулятор вологості ВІТ-1
+    </h1>
+    <form action="#" onsubmit="return false;">
+      <label>Показники без урахування поправок термометра:</label>
+      <div>
+        <label for="dry_bulb_1" class="main-label"
+          >Сухий термометр (°C):
+        </label>
+        <input
+          type="number"
+          id="dry_bulb_1"
+          name="dry_bulb_1"
+          required
+          step="0.1"
+          value="23.2"
+          onchange="calculateHumidity1()"
+          class="user-input"
+        />
+      </div>
+      <div>
+        <label for="wet_bulb_1" class="main-label"
+          >Вологий термометр (°C):</label
+        >
+        <input
+          type="number"
+          id="wet_bulb_1"
+          name="wet_bulb_1"
+          required
+          step="0.1"
+          value="15.6"
+          onchange="calculateHumidity1()"
+          class="user-input"
+        />
+      </div>
+      <label>Поправки термометра згідно паспорта (°C):</label>
+      <div class="row">
+        <div>0</div>
+        <div>10</div>
+        <div>15</div>
+        <div>20</div>
+        <div>25</div>
+      </div>
+      <div>
+        <input
+          type="number"
+          id="dry_bulb_1_p1_0"
+          name="dry_bulb_1_p1_0"
+          required
+          step="0.1"
+          value="0.0"
+          onchange="calculateHumidity1()"
+          class="user-input"
+        />
+        <input
+          type="number"
+          id="dry_bulb_1_p1_10"
+          name="dry_bulb_1_p1_10"
+          required
+          step="0.1"
+          value="-0.1"
+          onchange="calculateHumidity1()"
+          class="user-input"
+        />
+        <input
+          type="number"
+          id="dry_bulb_1_p1_15"
+          name="dry_bulb_1_p1_15"
+          required
+          step="0.1"
+          value="-0.1"
+          onchange="calculateHumidity1()"
+          class="user-input"
+        />
+        <input
+          type="number"
+          id="dry_bulb_1_p1_20"
+          name="dry_bulb_1_p1_20"
+          required
+          step="0.1"
+          value="-0.2"
+          onchange="calculateHumidity1()"
+          class="user-input"
+        />
+        <input
+          type="number"
+          id="dry_bulb_1_p1_25"
+          name="dry_bulb_1_p1_25"
+          required
+          step="0.1"
+          value="0.0"
+          onchange="calculateHumidity1()"
+          class="user-input"
+        />
+        <span>"сухий"</span>
+      </div>
+      <div>
+        <input
+          type="number"
+          id="wet_bulb_1_p2_0"
+          name="wet_bulb_1_p2_0"
+          required
+          step="0.1"
+          value="-0.3"
+          onchange="calculateHumidity1()"
+          class="user-input"
+        />
+        <input
+          type="number"
+          id="wet_bulb_1_p2_10"
+          name="wet_bulb_1_p2_10"
+          required
+          step="0.1"
+          value="0.2"
+          onchange="calculateHumidity1()"
+          class="user-input"
+        />
+        <input
+          type="number"
+          id="wet_bulb_1_p2_15"
+          name="wet_bulb_1_p2_15"
+          required
+          step="0.1"
+          value="0.2"
+          onchange="calculateHumidity1()"
+          class="user-input"
+        />
+        <input
+          type="number"
+          id="wet_bulb_1_p2_20"
+          name="wet_bulb_1_p2_20"
+          required
+          step="0.1"
+          value="0.2"
+          onchange="calculateHumidity1()"
+          class="user-input"
+        />
+        <input
+          type="number"
+          id="wet_bulb_1_p2_25"
+          name="wet_bulb_1_p2_25"
+          required
+          step="0.1"
+          value="0.2"
+          onchange="calculateHumidity1()"
+          class="user-input"
+        />
+        <span>"зволожений"</span>
+      </div>
+      <button type="button" onclick="reset1()">Скинути</button>
+      <button type="button" onclick="calculateHumidity1()">Підрахунок</button>
+    </form>
+    <p>Сухий з урахуванням поправок (°C): <span id="dry1"></span></p>
+    <p>Вологий з урахуванням поправок (°C): <span id="wet1"></span></p>
+    <p>Різниця (°C): <span id="diff1"></span></p>
+    <p class="large">
+      <b>Вологість (%): <span id="humidity1"></span></b>
+      <span id="err1" class="err"></span>
+    </p>
+    <hr />
+    <h1 title="Вологометр Інженерний Технічний-2">
+      Калькулятор вологості ВІТ-2
+    </h1>
+    <form action="#" onsubmit="return false;">
+      <label>Показники без урахування поправок термометра:</label>
+      <div>
+        <label for="dry_bulb_2" class="main-label"
+          >Сухий термометр (°C):
+        </label>
+        <input
+          type="number"
+          id="dry_bulb_2"
+          name="dry_bulb_2"
+          required
+          step="0.1"
+          value="22.8"
+          onchange="calculateHumidity2()"
+          class="user-input"
+        />
+      </div>
+      <div>
+        <label for="wet_bulb_2" class="main-label"
+          >Вологий термометр (°C):</label
+        >
+        <input
+          type="number"
+          id="wet_bulb_2"
+          name="wet_bulb_2"
+          required
+          step="0.1"
+          value="15.4"
+          onchange="calculateHumidity2()"
+          class="user-input"
+        />
+      </div>
+      <label>Поправки термометра згідно паспорта (°C):</label>
+      <div class="row">
+        <div>15</div>
+        <div>20</div>
+        <div>25</div>
+        <div>30</div>
+        <div>40</div>
+      </div>
+      <div>
+        <input
+          type="number"
+          id="dry_bulb_2_p1_15"
+          name="dry_bulb_2_p1_15"
+          required
+          step="0.1"
+          value="-0.1"
+          onchange="calculateHumidity2()"
+          class="user-input"
+        />
+        <input
+          type="number"
+          id="dry_bulb_2_p1_20"
+          name="dry_bulb_2_p1_20"
+          required
+          step="0.1"
+          value="0.2"
+          onchange="calculateHumidity2()"
+          class="user-input"
+        />
+        <input
+          type="number"
+          id="dry_bulb_2_p1_25"
+          name="dry_bulb_2_p1_25"
+          required
+          step="0.1"
+          value="0.1"
+          onchange="calculateHumidity2()"
+          class="user-input"
+        />
+        <input
+          type="number"
+          id="dry_bulb_2_p1_30"
+          name="dry_bulb_2_p1_30"
+          required
+          step="0.1"
+          value="0.0"
+          onchange="calculateHumidity2()"
+          class="user-input"
+        />
+        <input
+          type="number"
+          id="dry_bulb_2_p1_40"
+          name="dry_bulb_2_p1_40"
+          required
+          step="0.1"
+          value="-0.1"
+          onchange="calculateHumidity2()"
+          class="user-input"
+        />
+        <span>"сухий"</span>
+      </div>
+      <div>
+        <input
+          type="number"
+          id="wet_bulb_2_p2_15"
+          name="wet_bulb_2_p2_15"
+          required
+          step="0.1"
+          value="-0.1"
+          onchange="calculateHumidity2()"
+          class="user-input"
+        />
+        <input
+          type="number"
+          id="wet_bulb_2_p2_20"
+          name="wet_bulb_2_p2_20"
+          required
+          step="0.1"
+          value="0.2"
+          onchange="calculateHumidity2()"
+          class="user-input"
+        />
+        <input
+          type="number"
+          id="wet_bulb_2_p2_25"
+          name="wet_bulb_2_p2_25"
+          required
+          step="0.1"
+          value="0.1"
+          onchange="calculateHumidity2()"
+          class="user-input"
+        />
+        <input
+          type="number"
+          id="wet_bulb_2_p2_30"
+          name="wet_bulb_2_p2_30"
+          required
+          step="0.1"
+          value="0.0"
+          onchange="calculateHumidity2()"
+          class="user-input"
+        />
+        <input
+          type="number"
+          id="wet_bulb_2_p2_40"
+          name="wet_bulb_2_p2_40"
+          required
+          step="0.1"
+          value="-0.1"
+          onchange="calculateHumidity2()"
+          class="user-input"
+        />
+        <span>"зволожений"</span>
+      </div>
+      <button type="button" onclick="reset2()">Скинути</button>
+      <button type="button" onclick="calculateHumidity2()">Підрахунок</button>
+    </form>
+    <p>Сухий з урахуванням поправок (°C): <span id="dry2"></span></p>
+    <p>Вологий з урахуванням поправок (°C): <span id="wet2"></span></p>
+    <p>Різниця (°C): <span id="diff2"></span></p>
+    <p class="large">
+      <b>Вологість (%): <span id="humidity2"></span></b>
+      <span id="err2" class="err"></span>
+    </p>
+
+    <script>
+      function reset1() {
+        document.getElementById("err1").textContent = "";
+        document.getElementById("dry1").textContent = "";
+        document.getElementById("wet1").textContent = "";
+        document.getElementById("diff1").textContent = "";
+        document.getElementById("humidity1").textContent = "";
+
+        document.getElementById("dry_bulb_1").value = "0.0";
+        document.getElementById("wet_bulb_1").value = "0.0";
+
+        document.getElementById("dry_bulb_1_p1_0").value = "0.0";
+        document.getElementById("dry_bulb_1_p1_10").value = "0.0";
+        document.getElementById("dry_bulb_1_p1_15").value = "0.0";
+        document.getElementById("dry_bulb_1_p1_20").value = "0.0";
+        document.getElementById("dry_bulb_1_p1_25").value = "0.0";
+
+        document.getElementById("wet_bulb_1_p2_0").value = "0.0";
+        document.getElementById("wet_bulb_1_p2_10").value = "0.0";
+        document.getElementById("wet_bulb_1_p2_15").value = "0.0";
+        document.getElementById("wet_bulb_1_p2_20").value = "0.0";
+        document.getElementById("wet_bulb_1_p2_25").value = "0.0";
+      }
+
+      function calculateHumidity1() {
+        document.getElementById("err1").textContent = "";
+        document.getElementById("dry1").textContent = "";
+        document.getElementById("wet1").textContent = "";
+        document.getElementById("diff1").textContent = "";
+
+        let dry = parseFloat(document.getElementById("dry_bulb_1").value);
+        let wet = parseFloat(document.getElementById("wet_bulb_1").value);
+
+        if (isNaN(dry) || isNaN(wet)) {
+          document.getElementById("err1").textContent =
+            "введено помилкoве значення";
+          document.getElementById("humidity1").textContent = "";
+          return;
+        }
+
+        let p1_0 = parseFloat(document.getElementById("dry_bulb_1_p1_0").value);
+        let p1_10 = parseFloat(
+          document.getElementById("dry_bulb_1_p1_10").value
+        );
+        let p1_15 = parseFloat(
+          document.getElementById("dry_bulb_1_p1_15").value
+        );
+        let p1_20 = parseFloat(
+          document.getElementById("dry_bulb_1_p1_20").value
+        );
+        let p1_25 = parseFloat(
+          document.getElementById("dry_bulb_1_p1_25").value
+        );
+
+        if (dry < 0) {
+          dry += p1_0 / (1.0 + (0 - dry));
+        } else if (dry < 10) {
+          dry += (p1_0 * (10 - dry) + p1_10 * (dry - 0)) / (10 - 0);
+        } else if (dry < 15) {
+          dry += (p1_10 * (15 - dry) + p1_15 * (dry - 10)) / (15 - 10);
+        } else if (dry < 20) {
+          dry += (p1_15 * (20 - dry) + p1_20 * (dry - 15)) / (20 - 15);
+        } else if (dry < 25) {
+          dry += (p1_20 * (25 - dry) + p1_25 * (dry - 20)) / (25 - 20);
+        } else {
+          dry += p1_25 / (1.0 + (dry - 25));
+        }
+
+        let p2_0 = parseFloat(document.getElementById("wet_bulb_1_p2_0").value);
+        let p2_10 = parseFloat(
+          document.getElementById("wet_bulb_1_p2_10").value
+        );
+        let p2_15 = parseFloat(
+          document.getElementById("wet_bulb_1_p2_15").value
+        );
+        let p2_20 = parseFloat(
+          document.getElementById("wet_bulb_1_p2_20").value
+        );
+        let p2_25 = parseFloat(
+          document.getElementById("wet_bulb_1_p2_25").value
+        );
+
+        if (wet < 0) {
+          wet += p2_0 / (1.0 + (0 - wet));
+        } else if (wet < 10) {
+          wet += (p2_0 * (10 - wet) + p2_10 * (wet - 0)) / (10 - 0);
+        } else if (wet < 15) {
+          wet += (p2_10 * (15 - wet) + p2_15 * (wet - 10)) / (15 - 10);
+        } else if (wet < 20) {
+          wet += (p2_15 * (20 - wet) + p2_20 * (wet - 15)) / (20 - 15);
+        } else if (wet < 25) {
+          wet += (p2_20 * (25 - wet) + p2_25 * (wet - 20)) / (25 - 20);
+        } else {
+          wet += p2_25 / (1.0 + (dry - 25));
+        }
+
+        document.getElementById("dry1").textContent = dry.toFixed(2);
+        document.getElementById("wet1").textContent = wet.toFixed(2);
+        document.getElementById("diff1").textContent = (dry - wet).toFixed(2);
+
+        let diff = dry - wet;
+        let humidity = -1.0;
+
+        if (dry < 3 || dry > 27) {
+          document.getElementById("err1").textContent =
+            "введенe значення для сухого термометра виходять за межі робочого діапазону";
+          document.getElementById("humidity1").textContent = "";
+          return;
+        }
+        if (diff < 0) {
+          document.getElementById("err1").textContent =
+            "показник сухого термометра має бути більiшим за показник вологого термометра";
+          document.getElementById("humidity1").textContent = "";
+          return;
+        }
+        if (diff > 12) {
+          document.getElementById("err1").textContent =
+            "різниця показників виходить за межі робочого діапазону";
+          document.getElementById("humidity1").textContent = "";
+          return;
+        }
+
+        document.getElementById("err1").textContent = "";
+
+        let x = dry;
+        let y = diff;
+        let xx = x * x;
+        let yy = y * y;
+        let xy = x * y;
+        let xxx = x * x * x;
+        let xxy = x * x * y;
+        let xyy = x * y * y;
+        let yyy = y * y * y;
+
+        humidity =
+          96.043396 +
+          9.01157737e-1 * x +
+          -2.04601574e1 * y +
+          -6.22073449e-2 * xx +
+          1.89340934e-1 * yy +
+          7.70375073e-1 * xy +
+          1.28059392e-3 * xxx +
+          -1.16476435e-2 * xxy +
+          -4.02002688e-3 * xyy +
+          1.41684921e-3 * yyy;
+
+        if (humidity < 0) {
+          humidity = 0;
+        }
+        if (humidity > 100) {
+          humidity = 100;
+        }
+
+        delta = dry < 10 ? 7 : dry < 30 ? 6 : 5;
+        document.getElementById("humidity1").textContent =
+          humidity.toFixed(1) + " ± " + delta + "%";
+      }
+
+      function reset2() {
+        document.getElementById("err2").textContent = "";
+        document.getElementById("dry2").textContent = "";
+        document.getElementById("wet2").textContent = "";
+        document.getElementById("diff2").textContent = "";
+        document.getElementById("humidity2").textContent = "";
+
+        document.getElementById("dry_bulb_2").value = "0.0";
+        document.getElementById("wet_bulb_2").value = "0.0";
+
+        document.getElementById("dry_bulb_2_p1_15").value = "0.0";
+        document.getElementById("dry_bulb_2_p1_20").value = "0.0";
+        document.getElementById("dry_bulb_2_p1_25").value = "0.0";
+        document.getElementById("dry_bulb_2_p1_30").value = "0.0";
+        document.getElementById("dry_bulb_2_p1_40").value = "0.0";
+
+        document.getElementById("wet_bulb_2_p2_15").value = "0.0";
+        document.getElementById("wet_bulb_2_p2_20").value = "0.0";
+        document.getElementById("wet_bulb_2_p2_25").value = "0.0";
+        document.getElementById("wet_bulb_2_p2_30").value = "0.0";
+        document.getElementById("wet_bulb_2_p2_40").value = "0.0";
+      }
+
+      function calculateHumidity2() {
+        document.getElementById("err2").textContent = "";
+        document.getElementById("dry2").textContent = "";
+        document.getElementById("wet2").textContent = "";
+        document.getElementById("diff2").textContent = "";
+
+        let dry = parseFloat(document.getElementById("dry_bulb_2").value);
+        let wet = parseFloat(document.getElementById("wet_bulb_2").value);
+
+        if (isNaN(dry) || isNaN(wet)) {
+          document.getElementById("err2").textContent =
+            "введено помилкoве значення";
+          document.getElementById("humidity2").textContent = "";
+          return;
+        }
+
+        let p1_15 = parseFloat(
+          document.getElementById("dry_bulb_2_p1_15").value
+        );
+        let p1_20 = parseFloat(
+          document.getElementById("dry_bulb_2_p1_20").value
+        );
+        let p1_25 = parseFloat(
+          document.getElementById("dry_bulb_2_p1_25").value
+        );
+        let p1_30 = parseFloat(
+          document.getElementById("dry_bulb_2_p1_30").value
+        );
+        let p1_40 = parseFloat(
+          document.getElementById("dry_bulb_2_p1_40").value
+        );
+
+        if (dry < 15) {
+          dry += p1_15 / (1.0 + (15 - dry));
+        } else if (dry < 20) {
+          dry += (p1_15 * (20 - dry) + p1_20 * (dry - 15)) / (20 - 15);
+        } else if (dry < 25) {
+          dry += (p1_20 * (25 - dry) + p1_25 * (dry - 20)) / (25 - 20);
+        } else if (dry < 30) {
+          dry += (p1_25 * (30 - dry) + p1_30 * (dry - 25)) / (30 - 25);
+        } else if (dry < 40) {
+          dry += (p1_30 * (40 - dry) + p1_40 * (dry - 30)) / (40 - 30);
+        } else {
+          dry += p1_40 / (1.0 + (dry - 40));
+        }
+
+        let p2_15 = parseFloat(
+          document.getElementById("wet_bulb_2_p2_15").value
+        );
+        let p2_20 = parseFloat(
+          document.getElementById("wet_bulb_2_p2_20").value
+        );
+        let p2_25 = parseFloat(
+          document.getElementById("wet_bulb_2_p2_25").value
+        );
+        let p2_30 = parseFloat(
+          document.getElementById("wet_bulb_2_p2_30").value
+        );
+        let p2_40 = parseFloat(
+          document.getElementById("wet_bulb_2_p2_40").value
+        );
+
+        if (wet < 15) {
+          wet += p2_15 / (1.0 + (15 - wet));
+        } else if (wet < 20) {
+          wet += (p2_15 * (20 - wet) + p2_20 * (wet - 15)) / (20 - 15);
+        } else if (wet < 25) {
+          wet += (p2_20 * (25 - wet) + p2_25 * (wet - 20)) / (25 - 20);
+        } else if (wet < 30) {
+          wet += (p2_25 * (30 - wet) + p2_30 * (wet - 25)) / (30 - 25);
+        } else if (wet < 40) {
+          wet += (p2_30 * (40 - wet) + p2_40 * (wet - 30)) / (40 - 30);
+        } else {
+          wet += p2_40 / (1.0 + (wet - 40));
+        }
+
+        document.getElementById("dry2").textContent = dry.toFixed(2);
+        document.getElementById("wet2").textContent = wet.toFixed(2);
+        document.getElementById("diff2").textContent = (dry - wet).toFixed(2);
+
+        let diff = dry - wet;
+        let humidity = -1.0;
+
+        if (dry < 18 || dry > 42) {
+          document.getElementById("err2").textContent =
+            "введенe значення для сухого термометра виходять за межі робочого діапазону";
+          document.getElementById("humidity2").textContent = "";
+          return;
+        }
+        if (diff < 0) {
+          document.getElementById("err2").textContent =
+            "показник сухого термометра має бути більiшим за показник вологого термометра";
+          document.getElementById("humidity2").textContent = "";
+          return;
+        }
+        if (diff > 12.5) {
+          document.getElementById("err2").textContent =
+            "різниця показників виходить за межі робочого діапазону";
+          document.getElementById("humidity2").textContent = "";
+          return;
+        }
+
+        document.getElementById("err2").textContent = "";
+
+        let x = dry;
+        let y = diff;
+        let xx = x * x;
+        let yy = y * y;
+        let xy = x * y;
+        let xxx = x * x * x;
+        let xxy = x * x * y;
+        let xyy = x * y * y;
+        let yyy = y * y * y;
+
+        humidity =
+          34.79075 +
+          6.589864 * x +
+          -16.754679 * y +
+          -0.21683803 * xx +
+          0.20619017 * yy +
+          0.42668945 * xy +
+          0.0023294599 * xxx +
+          -0.00429078 * xxy +
+          -0.0016861386 * xyy +
+          -0.002437537 * yyy;
+
+        if (humidity < 0) {
+          humidity = 0;
+        }
+        if (humidity > 100) {
+          humidity = 100;
+        }
+        delta = dry < 10 ? 7 : dry < 30 ? 6 : 5;
+        document.getElementById("humidity2").textContent =
+          humidity.toFixed(1) + " ± " + delta + "%";
+      }
+    </script>
+    <style>
+      .user-input {
+        width: 50px;
+      }
+      .err {
+        color: orangered;
+      }
+      .row {
+        display: flex;
+      }
+      .row * {
+        width: 62px;
+      }
+      .large * {
+        font-size: larger;
+      }
+      p {
+        margin-top: 0px;
+        margin-bottom: 10px;
+      }
+
+      /* General styles for readability and spacing */
+      body {
+        font-family: sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        margin: 0;
+        padding: 0 20px 20px 20px;
+      }
+
+      /* Headings */
+      h1 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      /* Forms */
+      form {
+        margin: 15px 0;
+      }
+
+      label {
+        display: block;
+      }
+
+      button {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        margin-top: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      b,
+      strong {
+        font-weight: bold;
+      }
+
+      span {
+        font-style: italic;
+      }
+
+      /* Links */
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      label.main-label {
+        display: inline-block;
+        min-width: 200px;
+      }
+    </style>
+    <a href="https://send.monobank.ua/jar/3L7XWSijZp"
+      >Банка для донатів (підтримати розробку)</a
+    >
+  </body>
+</html>
